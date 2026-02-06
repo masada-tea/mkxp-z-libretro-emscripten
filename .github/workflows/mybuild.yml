@@ -210,25 +210,25 @@ jobs:
         id: cache-game
         uses: actions/cache@v5
         with:
-          key: vxinsanity.zip
-          path: vxinsanity.zip
+          key: star-stealing-prince.zip
+          path: star-stealing-prince.zip
 
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko vxinsanity.zip http://tokyopr.0t0.jp/vxinsanity.zip
+          curl -Lko star-stealing-prince.zip http://tokyopr.0t0.jp/vxinsanity.zip
 
       - name: Pack game files
         run: |
-          unzip vxinsanity.zip
-          cd vxinsanitywRTP
-          zip -r0 ../vxinsanyty.mkxpz *
+          unzip star-stealing-prince.zip
+          cd StarStealingPrinceFullV.3.2wRTP
+          zip -r0 ../star-stealing-prince.mkxpz *
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: vxinsanity.mkxpz
-          path: vninsanity.mkxpz
+          name: star-stealing-prince.mkxpz
+          path: star-stealing-prince.mkxpz
 
   build-stage1:
     name: Build stage 1
@@ -419,8 +419,8 @@ jobs:
             id: knight-blade-howling-of-kerberos
             rtp: Standard
             xp: true
-          - name: vxisnanity
-            id: vxinsanity
+          - name: Star Stealing Prince
+            id: star-stealing-prince
             rtp: None
             xp: false
     needs:
@@ -431,7 +431,7 @@ jobs:
       - download-rpg-maker-vx-ace-rtp
       - download-crysalis
       - download-knight-blade-howling-of-kerberos
-      - download-vxonsanity
+      - download-star-stealing-prince
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
     steps:
@@ -535,8 +535,8 @@ jobs:
       - name: Download Nostalgist.js with Star Stealing Prince
         uses: actions/download-artifact@v5
         with:
-          name: vxinsanity
-          path: dist/insanity
+          name: mkxp-z_libretro_nostalgist_star-stealing-prince
+          path: dist/nostalgist-star-stealing-prince
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
