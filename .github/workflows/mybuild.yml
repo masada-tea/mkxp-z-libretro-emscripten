@@ -221,7 +221,7 @@ jobs:
       - name: Pack game files
         run: |
           unzip star-stealing-prince.zip
-          cd StarStealingPrinceFullV.3.2wRTP
+          cd vxinsanity
           zip -r0 ../star-stealing-prince.mkxpz *
 
       - name: Upload artifact
