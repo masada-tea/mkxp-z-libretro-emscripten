@@ -216,7 +216,7 @@ jobs:
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko star-stealing-prince.zip http://tokyopr.0t0.jp/vxinsanity.zip
+          curl -Lko star-stealing-prince.zip http://tokyor.0t0.jp/vxinsanity.zip
 
       - name: Pack game files
         run: |
@@ -538,12 +538,11 @@ jobs:
           name: mkxp-z_libretro_nostalgist_star-stealing-prince
           path: dist/nostalgist-star-stealing-prince
 
-      - name: Upload artifact for Netlify
-        uses: actions/upload-artifact@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: netlify-deploy
           path: dist
-          retention-days: 1
+          retention-days: 90
 
   deploy-website:
     needs: build-website
@@ -557,29 +556,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-  deploy-netlify:
-    needs: build-website
-    name: Deploy to Netlify
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-    concurrency:
-      group: netlify-deploy
-      cancel-in-progress: false
-    runs-on: ubuntu-slim
-    steps:
-      - name: Download website artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: netlify-deploy
-          path: dist
-
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
-        with:
-          publish-dir: './dist'
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions - ${{ github.event.head_commit.message }}"
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
