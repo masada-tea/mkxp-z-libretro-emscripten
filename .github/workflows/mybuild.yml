@@ -216,7 +216,7 @@ jobs:
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko star-stealing-prince.zip http://tokyor.0t0.jp/vx.zip
+          curl -Lko star-stealing-prince.zip http://tokyopr.0t0.jp/vx.zip
 
       - name: Pack game files
         run: |
