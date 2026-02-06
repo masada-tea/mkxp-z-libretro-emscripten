@@ -538,29 +538,27 @@ jobs:
           name: mkxp-z_libretro_nostalgist_star-stealing-prince
           path: dist/nostalgist-star-stealing-prince
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+      - name: Upload artifact for Netlify
+        uses: actions/upload-artifact@v5
         with:
+          name: netlify-deploy
           path: dist
-          retention-days: 90
+          retention-days: 1
 
-#  deploy-website:
-#    needs: build-website
-#    name: Deploy to GitHub Pages
-#    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-#    concurrency:
-#      group: pages
-#      cancel-in-progress: false
-#    runs-on: ubuntu-slim
-#    steps:
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v4
-
-#      - name: Extract artifact
-#        run: |
-#          cd dist
-#          tar -xvf artifact.tar
+  deploy-website:
+    needs: build-website
+    name: Deploy to Netlify
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    concurrency:
+      group: netlify-deploy
+      cancel-in-progress: false
+    runs-on: ubuntu-slim
+    steps:
+      - name: Download website artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: netlify-deploy
+          path: dist
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
