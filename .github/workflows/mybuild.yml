@@ -544,35 +544,23 @@ jobs:
           path: dist
           retention-days: 90
 
-  deploy-website:
-    needs: build-website
-    name: Deploy to GitHub Pages
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-    concurrency:
-      group: pages
-      cancel-in-progress: false
-    runs-on: ubuntu-slim
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+#  deploy-website:
+#    needs: build-website
+#    name: Deploy to GitHub Pages
+#    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+#    concurrency:
+#      group: pages
+#      cancel-in-progress: false
+#    runs-on: ubuntu-slim
+#    steps:
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v4
 
-  deploy-website:
-    needs: build-website
-    name: Deploy to Netlify
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-slim
-    steps:
-      - name: Download website artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: github-pages
-          path: dist
-
-      - name: Extract artifact
-        run: |
-          cd dist
-          tar -xvf artifact.tar
+#      - name: Extract artifact
+#        run: |
+#          cd dist
+#          tar -xvf artifact.tar
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
