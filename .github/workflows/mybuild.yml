@@ -56,7 +56,7 @@ jobs:
         uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: Standard.mkxpz
-          path: /htdocs/Standard.mkxpz
+          path: Standard.mkxpz
           host: ftpupload.net
           port: 21
           username: ${{ secrets.FTP_USERNAME }}
