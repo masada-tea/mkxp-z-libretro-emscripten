@@ -99,11 +99,23 @@ jobs:
           cd app
           zip -r0 ../RPGVX.mkxpz *
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: RPGVX.mkxpz
           path: RPGVX.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: RPGVX.mkxpz
+#          path: RPGVX.mkxpz
 
   download-rpg-maker-vx-ace-rtp:
     name: Download RPG Maker VX Ace run time package
@@ -134,11 +146,23 @@ jobs:
           cd app
           zip -r0 ../RPGVXAce.mkxpz *
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: RPGVXAce.mkxpz
           path: RPGVXAce.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: RPGVXAce.mkxpz
+#          path: RPGVXAce.mkxpz
 
   download-aetherion:
     name: Download Aetherion
@@ -169,11 +193,23 @@ jobs:
           cd aetherion
           zip -r0 ../aetherion.mkxpz *
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: aetherion.mkxpz
           path: aetherion.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: aetherion.mkxpz
+#          path: aetherion.mkxpz
 
   download-crysalis:
     name: Download Crysalis
@@ -204,11 +240,23 @@ jobs:
           cd crysalis
           zip -r0 ../crysalis.mkxpz *
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: crysalis.mkxpz
           path: crysalis.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: crysalis.mkxpz
+#          path: crysalis.mkxpz
 
   download-knight-blade-howling-of-kerberos:
     name: 'Download KNight-Blade: Howling of Kerberos'
@@ -238,11 +286,23 @@ jobs:
           cd KN_E
           zip -r0 ../knight-blade-howling-of-kerberos.mkxpz *
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: knight-blade-howling-of-kerberos.mkxpz
           path: knight-blade-howling-of-kerberos.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: knight-blade-howling-of-kerberos.mkxpz
+#          path: knight-blade-howling-of-kerberos.mkxpz
 
   download-star-stealing-prince:
     name: Download Star Stealing Prince
@@ -272,11 +332,23 @@ jobs:
           cd StarStealingPrinceFullV.3.2wRTP
           zip -r0 ../star-stealing-prince.mkxpz *
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: star-stealing-prince.mkxpz
           path: star-stealing-prince.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: star-stealing-prince.mkxpz
+#          path: star-stealing-prince.mkxpz
 
   build-stage1:
     name: Build stage 1
@@ -311,11 +383,23 @@ jobs:
           cd mkxp-z/libretro
           CLICOLOR_FORCE=1 make -j $(nproc) WASI_SDK=${{ runner.temp }}/wasi-sdk WASM_OPT=${{ runner.temp }}/binaryen/bin/wasm-opt
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v5
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: stage1
           path: mkxp-z/libretro/build/libretro-stage1
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v5
+#        with:
+#          name: stage1
+#          path: mkxp-z/libretro/build/libretro-stage1
 
   build-core:
     needs: build-stage1
@@ -365,11 +449,23 @@ jobs:
           cd mkxp-z/build
           CLICOLOR_FORCE=1 ninja -v
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v5
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: mkxp-z_libretro.a
           path: mkxp-z/build/mkxp-z_libretro.a
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v5
+#        with:
+#          name: mkxp-z_libretro.a
+#          path: mkxp-z/build/mkxp-z_libretro.a
 
   build-frontend:
     needs: build-core
@@ -399,13 +495,27 @@ jobs:
           git apply ../retroarch.patch
           CLICOLOR_FORCE=1 emmake make -f Makefile.emscripten LIBRETRO=mkxp-z HAVE_THREADS=1 PROXY_TO_PTHREAD=1 HAVE_AUDIOWORKLET=1 HAVE_RWEBAUDIO=0 HAVE_AL=0 HAVE_WASMFS=1 HAVE_EXTRA_WASMFS=1
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v5
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: mkxp-z_libretro.wasm
           path: |
             retroarch/mkxp-z_libretro.js
             retroarch/mkxp-z_libretro.wasm
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v5
+#        with:
+#          name: mkxp-z_libretro.wasm
+#          path: |
+#            retroarch/mkxp-z_libretro.js
+#            retroarch/mkxp-z_libretro.wasm
 
   build-retroarch-web-player:
     needs: build-frontend
@@ -448,11 +558,23 @@ jobs:
           cd retroarch
           git apply ../retroarch.patch
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v5
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: mkxp-z_libretro_retroarch_web_player
           path: retroarch/pkg/emscripten/libretro-thread
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v5
+#        with:
+#          name: mkxp-z_libretro_retroarch_web_player
+#          path: retroarch/pkg/emscripten/libretro-thread
 
   build-nostalgist:
     strategy:
@@ -597,11 +719,23 @@ jobs:
           name: mkxp-z_libretro_nostalgist_star-stealing-prince
           path: dist/nostalgist-star-stealing-prince
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
+          name: dist
           path: dist
-          retention-days: 90
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-pages-artifact@v4
+#        with:
+#          path: dist
+#          retention-days: 90
 
   deploy-website:
     needs: build-website
