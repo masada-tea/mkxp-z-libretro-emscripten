@@ -24,52 +24,6 @@ jobs:
           npm install
           npm run build
 
-  download-rpg-maker-xp-rtp:
-    name: Download RPG Maker XP run time package
-    runs-on: ubuntu-slim
-    steps:
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y curl innoextract
-
-      - name: Restore run time package from cache
-        id: cache-rtp
-        uses: actions/cache@v5
-        with:
-          key: xp_rtp104e.exe
-          path: xp_rtp104e.exe
-
-      - name: Download run time package if not cached
-        if: steps.cache-rtp.outputs.cache-hit != 'true'
-        run: |
-          curl -Lko xp_rtp104e.exe https://dl.komodo.jp/rpgmakerweb/run-time-packages/xp_rtp104e.exe
-          [ "$(sha256sum xp_rtp104e.exe | cut -d ' ' -f 1)" = 'b3bd20ad7f413b40ac233aafd2e061de1dc429c2eadb59d0b3157ba3c47f16b2' ]
-
-      - name: Pack run time package files
-        run: |
-          innoextract xp_rtp104e.exe
-          cd app
-          zip -r0 ../Standard.mkxpz *
-
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
-        with:
-          name: Standard.mkxpz
-          path: Standard.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: Standard.mkxpz
-#          path: Standard.mkxpz
-
   download-rpg-maker-vx-rtp:
     name: Download RPG Maker VX run time package
     runs-on: ubuntu-slim
@@ -99,167 +53,14 @@ jobs:
           cd app
           zip -r0 ../RPGVX.mkxpz *
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: RPGVX.mkxpz
           path: RPGVX.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
 
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: RPGVX.mkxpz
-#          path: RPGVX.mkxpz
-
-  download-rpg-maker-vx-ace-rtp:
-    name: Download RPG Maker VX Ace run time package
-    runs-on: ubuntu-slim
-    steps:
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y curl zip innoextract
-
-      - name: Restore run time package from cache
-        id: cache-rtp
-        uses: actions/cache@v5
-        with:
-          key: RPGVXAce_RTP.zip
-          path: RPGVXAce_RTP.zip
-
-      - name: Download run time package if not cached
-        if: steps.cache-rtp.outputs.cache-hit != 'true'
-        run: |
-          curl -Lko RPGVXAce_RTP.zip https://dl.komodo.jp/rpgmakerweb/run-time-packages/RPGVXAce_RTP.zip
-          [ "$(sha256sum RPGVXAce_RTP.zip | cut -d ' ' -f 1)" = '7e93d0ead93a686218b7c671bf099ef42f09f536083bd0b2f0fa6423a39fc19b' ]
-
-      - name: Pack run time package files
-        run: |
-          unzip RPGVXAce_RTP.zip
-          innoextract RTP100/Setup.exe
-          cd app
-          zip -r0 ../RPGVXAce.mkxpz *
-
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
-        with:
-          name: RPGVXAce.mkxpz
-          path: RPGVXAce.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: RPGVXAce.mkxpz
-#          path: RPGVXAce.mkxpz
-
-  download-aetherion:
-    name: Download Aetherion
-    runs-on: ubuntu-slim
-    steps:
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y curl zip 7zip
-
-      - name: Restore game from cache
-        id: cache-game
-        uses: actions/cache@v5
-        with:
-          key: aetherion.zip
-          path: aetherion.zip
-
-      - name: Download game if not cached
-        if: steps.cache-game.outputs.cache-hit != 'true'
-        run: |
-          curl -Lko aetherion.zip https://dl.komodo.jp/rpgmakerweb/free-game-bundle/aetherion.zip
-          [ "$(sha256sum aetherion.zip | cut -d ' ' -f 1)" = 'eeb75a6c99b58634e9dba5b344850bc5880e762b5b89ae45dab15b50cd00c37c' ]
-
-      - name: Pack game files
-        run: |
-          unzip aetherion.zip
-          7z x -oaetherion Aetherion.exe
-          cd aetherion
-          zip -r0 ../aetherion.mkxpz *
-
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
-        with:
-          name: aetherion.mkxpz
-          path: aetherion.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: aetherion.mkxpz
-#          path: aetherion.mkxpz
-
-  download-crysalis:
-    name: Download Crysalis
-    runs-on: ubuntu-slim
-    steps:
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y curl zip 7zip
-
-      - name: Restore game from cache
-        id: cache-game
-        uses: actions/cache@v5
-        with:
-          key: crysalis.zip
-          path: crysalis.zip
-
-      - name: Download game if not cached
-        if: steps.cache-game.outputs.cache-hit != 'true'
-        run: |
-          curl -Lko crysalis.zip https://dl.komodo.jp/rpgmakerweb/sample-games/crysalis.zip
-          [ "$(sha256sum crysalis.zip | cut -d ' ' -f 1)" = '8388d84097e8427abf22fcd110abd98d5892991987259d5bfc0b75eabea74763' ]
-
-      - name: Pack game files
-        run: |
-          unzip crysalis.zip
-          7z x -ocrysalis Crysalis.exe
-          cd crysalis
-          zip -r0 ../crysalis.mkxpz *
-
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
-        with:
-          name: crysalis.mkxpz
-          path: crysalis.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: crysalis.mkxpz
-#          path: crysalis.mkxpz
-
-  download-knight-blade-howling-of-kerberos:
-    name: 'Download KNight-Blade: Howling of Kerberos'
+  download-vx:
+    name: 'Download vx'
     runs-on: ubuntu-slim
     steps:
       - name: Install dependencies
@@ -271,41 +72,28 @@ jobs:
         id: cache-game
         uses: actions/cache@v5
         with:
-          key: knight-blade-howling-of-kerberos.zip
-          path: knight-blade-howling-of-kerberos.zip
+          key: vx.zip
+          path: vx.zip
 
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko knight-blade-howling-of-kerberos.zip https://dl.komodo.jp/rpgmakerweb/sample-games/knight-blade-howling-of-kerberos.zip
-          [ "$(sha256sum knight-blade-howling-of-kerberos.zip | cut -d ' ' -f 1)" = 'a47c9cf1eaa466fc0fcd5e4fff0143881d318a71424fe1fab823aa95acaac58c' ]
+          curl -Lko vx.zip https://tokyopr.0t0.jp/vx.zip
 
       - name: Pack game files
         run: |
-          unzip knight-blade-howling-of-kerberos.zip
-          cd KN_E
-          zip -r0 ../knight-blade-howling-of-kerberos.mkxpz *
+          unzip vx.zip
+          cd vx
+          zip -r0 ../vx.mkxpz *
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: knight-blade-howling-of-kerberos.mkxpz
-          path: knight-blade-howling-of-kerberos.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
+          name: vx.mkxpz
+          path: vx.mkxpz
 
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: knight-blade-howling-of-kerberos.mkxpz
-#          path: knight-blade-howling-of-kerberos.mkxpz
-
-  download-star-stealing-prince:
-    name: Download Star Stealing Prince
+  download-vxinsanity:
+    name: 'Download vxinsanity'
     runs-on: ubuntu-slim
     steps:
       - name: Install dependencies
@@ -317,38 +105,27 @@ jobs:
         id: cache-game
         uses: actions/cache@v5
         with:
-          key: star-stealing-prince.zip
-          path: star-stealing-prince.zip
+          key: vx.zip
+          path: vx.zip
 
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko star-stealing-prince.zip https://dl.komodo.jp/rpgmakerweb/free-game-bundle/star-stealing-prince.zip
-          [ "$(sha256sum star-stealing-prince.zip | cut -d ' ' -f 1)" = '453e9863d4b88d8b99d78695663849e0e07b8be7a55a2deb40d2b12e3a37c4bc' ]
+          curl -Lko vx.zip https://tokyopr.0t0.jp/vxinsanity.zip
 
       - name: Pack game files
         run: |
-          unzip star-stealing-prince.zip
-          cd StarStealingPrinceFullV.3.2wRTP
-          zip -r0 ../star-stealing-prince.mkxpz *
+          unzip vxinsanity.zip
+          cd vxinsanity
+          zip -r0 ../vxinsanity.mkxpz *
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: star-stealing-prince.mkxpz
-          path: star-stealing-prince.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
+          name: vxinsanity.mkxpz
+          path: vxinsanity.mkxpz
 
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: star-stealing-prince.mkxpz
-#          path: star-stealing-prince.mkxpz
+
 
   build-stage1:
     name: Build stage 1
@@ -383,23 +160,11 @@ jobs:
           cd mkxp-z/libretro
           CLICOLOR_FORCE=1 make -j $(nproc) WASI_SDK=${{ runner.temp }}/wasi-sdk WASM_OPT=${{ runner.temp }}/binaryen/bin/wasm-opt
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v5
         with:
           name: stage1
           path: mkxp-z/libretro/build/libretro-stage1
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v5
-#        with:
-#          name: stage1
-#          path: mkxp-z/libretro/build/libretro-stage1
 
   build-core:
     needs: build-stage1
@@ -421,22 +186,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download stage 1
+        uses: actions/download-artifact@v5
         with:
           name: stage1
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs/mkxp-z/libretro/build/libretro-stage1
-
-#      - name: Download stage 1
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: stage1
-#          path: mkxp-z/libretro/build/libretro-stage1
+          path: mkxp-z/libretro/build/libretro-stage1
 
       - name: Configure core
         run: |
@@ -460,23 +214,11 @@ jobs:
           cd mkxp-z/build
           CLICOLOR_FORCE=1 ninja -v
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v5
         with:
           name: mkxp-z_libretro.a
           path: mkxp-z/build/mkxp-z_libretro.a
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v5
-#        with:
-#          name: mkxp-z_libretro.a
-#          path: mkxp-z/build/mkxp-z_libretro.a
 
   build-frontend:
     needs: build-core
@@ -493,22 +235,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download core
+        uses: actions/download-artifact@v5
         with:
           name: mkxp-z_libretro.a
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs/mkxp-z/build
-
-#      - name: Download core
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro.a
-#          path: mkxp-z/build
+          path: mkxp-z/build
 
       - name: Build frontend
         run: |
@@ -517,27 +248,13 @@ jobs:
           git apply ../retroarch.patch
           CLICOLOR_FORCE=1 emmake make -f Makefile.emscripten LIBRETRO=mkxp-z HAVE_THREADS=1 PROXY_TO_PTHREAD=1 HAVE_AUDIOWORKLET=1 HAVE_RWEBAUDIO=0 HAVE_AL=0 HAVE_WASMFS=1 HAVE_EXTRA_WASMFS=1
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v5
         with:
           name: mkxp-z_libretro.wasm
           path: |
             retroarch/mkxp-z_libretro.js
             retroarch/mkxp-z_libretro.wasm
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v5
-#        with:
-#          name: mkxp-z_libretro.wasm
-#          path: |
-#            retroarch/mkxp-z_libretro.js
-#            retroarch/mkxp-z_libretro.wasm
 
   build-retroarch-web-player:
     needs: build-frontend
@@ -549,22 +266,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download core + frontend
+        uses: actions/download-artifact@v5
         with:
           name: mkxp-z_libretro.wasm
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs/retroarch
-
-#      - name: Download core + frontend
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro.wasm
-#          path: retroarch
+          path: retroarch
 
       - name: Build RetroArch web player
         run: |
@@ -591,55 +297,31 @@ jobs:
           cd retroarch
           git apply ../retroarch.patch
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v5
         with:
           name: mkxp-z_libretro_retroarch_web_player
           path: retroarch/pkg/emscripten/libretro-thread
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v5
-#        with:
-#          name: mkxp-z_libretro_retroarch_web_player
-#          path: retroarch/pkg/emscripten/libretro-thread
 
   build-nostalgist:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: Aetherion
-            id: aetherion
+          - name: VX
+            id: vx
             rtp: None
             xp: false
-          - name: Crysalis
-            id: crysalis
-            rtp: RPGVXAce
-            xp: false
-          - name: 'KNight-Blade: Howling of Kerberos'
-            id: knight-blade-howling-of-kerberos
-            rtp: Standard
-            xp: true
-          - name: Star Stealing Prince
-            id: star-stealing-prince
+          - name: VXInsanity
+            id: vxinsanity
             rtp: None
             xp: false
     needs:
       - check-nostalgist
       - build-frontend
-      - download-rpg-maker-xp-rtp
       - download-rpg-maker-vx-rtp
-      - download-rpg-maker-vx-ace-rtp
-      - download-aetherion
-      - download-crysalis
-      - download-knight-blade-howling-of-kerberos
-      - download-star-stealing-prince
+      - download-vx
+      - download-vxinsanity
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
     steps:
@@ -648,55 +330,22 @@ jobs:
         with:
           submodules: recursive
 
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download core + frontend
+        uses: actions/download-artifact@v5
         with:
           name: mkxp-z_libretro.wasm
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs/retroarch
+          path: retroarch
 
-#      - name: Download core + frontend
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro.wasm
-#          path: retroarch
-
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download game
+        uses: actions/download-artifact@v5
         with:
           name: ${{ matrix.id }}.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs/
 
-#      - name: Download game
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: ${{ matrix.id }}.mkxpz
-
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download run time package
+        if: matrix.rtp != 'None'
+        uses: actions/download-artifact@v5
         with:
-          name: ${{ matrix.id }}.mkxpz
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs/
-
-#      - name: Download run time package
-#        if: matrix.rtp != 'None'
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: ${{ matrix.rtp }}.mkxpz
+          name: ${{ matrix.rtp }}.mkxpz
 
       - name: Build Nostalgist.js
         run: |
@@ -727,23 +376,11 @@ jobs:
           npm install
           npm run build
 
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-artifact@v5
         with:
           name: mkxp-z_libretro_nostalgist_${{ matrix.id }}
-          path: mkxp-z_libretro_nostalgist_${{ matrix.id }}
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs/nostalgist/dist
-
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v5
-#        with:
-#          name: mkxp-z_libretro_nostalgist_${{ matrix.id }}
-#          path: nostalgist/dist
+          path: nostalgist/dist
 
   build-website:
     needs:
@@ -767,113 +404,29 @@ jobs:
           pandoc -f markdown -t html README.md >> dist/index.html
           echo '</body></html>' >> dist/index.html
 
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download RetroArch web player
+        uses: actions/download-artifact@v5
         with:
           name: mkxp-z_libretro_retroarch_web_player
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
           path: dist/retroarch-web-player
-          remote-path: /htdocs/retroarch-web-player
 
-#      - name: Download RetroArch web player
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro_retroarch_web_player
-#          path: dist/retroarch-web-player
-
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download Nostalgist.js with vx
+        uses: actions/download-artifact@v5
         with:
           name: mkxp-z_libretro_nostalgist_aetherion
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          path: dist/nostalgist-aetherion
-          remote-path: /htdocs/nostalgist-aetherion
+          path: dist/nostalgist-vx
 
-#      - name: Download Nostalgist.js with Aetherion
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro_nostalgist_aetherion
-#          path: dist/nostalgist-aetherion
-
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Download Nostalgist.js with vxinsanty
+        uses: actions/download-artifact@v5
         with:
           name: mkxp-z_libretro_nostalgist_crysalis
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          path: dist/nostalgist-crysalis
-          remote-path: /htdocs/nostalgist-crysalis
+          path: dist/nostalgist-vxinsanity
 
-#      - name: Download Nostalgist.js with Crysalis
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro_nostalgist_crysalis
-#          path: dist/nostalgist-crysalis
-
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: mkxp-z_libretro_nostalgist_knight-blade-howling-of-kerberos
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          path: dist/nostalgist-knight-blade-howling-of-kerberos
-          remote-path: /htdocs/nostalgist-knight-blade-howling-of-kerberos
-
-#      - name: 'Download Nostalgist.js with KNight-Blade: Howling of Kerberos'
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro_nostalgist_knight-blade-howling-of-kerberos
-#          path: dist/nostalgist-knight-blade-howling-of-kerberos
-
-      - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1.0.0
-        with:
-          name: mkxp-z_libretro_nostalgist_star-stealing-prince
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          path: dist/nostalgist-star-stealing-prince
-          remote-path: /htdocs/nostalgist-star-stealing-prince
-
-#      - name: Download Nostalgist.js with Star Stealing Prince
-#        uses: actions/download-artifact@v5
-#        with:
-#          name: mkxp-z_libretro_nostalgist_star-stealing-prince
-#          path: dist/nostalgist-star-stealing-prince
-
-      - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
-        with:
-          name: dist
           path: dist
-          host: ftpupload.net
-          port: 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          secure: false
-          remote-path: /htdocs
-
-#      - name: Upload artifact
-#        uses: actions/upload-pages-artifact@v4
-#        with:
-#          path: dist
-#          retention-days: 90
+          retention-days: 90
 
   deploy-website:
     needs: build-website
