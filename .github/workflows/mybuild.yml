@@ -421,11 +421,22 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Download stage 1
-        uses: actions/download-artifact@v5
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: stage1
-          path: mkxp-z/libretro/build/libretro-stage1
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs/mkxp-z/libretro/build/libretro-stage1
+
+#      - name: Download stage 1
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: stage1
+#          path: mkxp-z/libretro/build/libretro-stage1
 
       - name: Configure core
         run: |
@@ -482,11 +493,22 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Download core
-        uses: actions/download-artifact@v5
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro.a
-          path: mkxp-z/build
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs/mkxp-z/build
+
+#      - name: Download core
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro.a
+#          path: mkxp-z/build
 
       - name: Build frontend
         run: |
@@ -527,11 +549,22 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Download core + frontend
-        uses: actions/download-artifact@v5
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro.wasm
-          path: retroarch
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs/retroarch
+
+#      - name: Download core + frontend
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro.wasm
+#          path: retroarch
 
       - name: Build RetroArch web player
         run: |
@@ -615,22 +648,55 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Download core + frontend
-        uses: actions/download-artifact@v5
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro.wasm
-          path: retroarch
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs/retroarch
 
-      - name: Download game
-        uses: actions/download-artifact@v5
+#      - name: Download core + frontend
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro.wasm
+#          path: retroarch
+
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: ${{ matrix.id }}.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs/
 
-      - name: Download run time package
-        if: matrix.rtp != 'None'
-        uses: actions/download-artifact@v5
+#      - name: Download game
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: ${{ matrix.id }}.mkxpz
+
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
-          name: ${{ matrix.rtp }}.mkxpz
+          name: ${{ matrix.id }}.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs/
+
+#      - name: Download run time package
+#        if: matrix.rtp != 'None'
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: ${{ matrix.rtp }}.mkxpz
 
       - name: Build Nostalgist.js
         run: |
@@ -661,11 +727,23 @@ jobs:
           npm install
           npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v5
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1.0.0
         with:
           name: mkxp-z_libretro_nostalgist_${{ matrix.id }}
-          path: nostalgist/dist
+          path: mkxp-z_libretro_nostalgist_${{ matrix.id }}
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs/nostalgist/dist
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v5
+#        with:
+#          name: mkxp-z_libretro_nostalgist_${{ matrix.id }}
+#          path: nostalgist/dist
 
   build-website:
     needs:
@@ -689,35 +767,95 @@ jobs:
           pandoc -f markdown -t html README.md >> dist/index.html
           echo '</body></html>' >> dist/index.html
 
-      - name: Download RetroArch web player
-        uses: actions/download-artifact@v5
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro_retroarch_web_player
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
           path: dist/retroarch-web-player
+          remote-path: /htdocs/retroarch-web-player
 
-      - name: Download Nostalgist.js with Aetherion
-        uses: actions/download-artifact@v5
+#      - name: Download RetroArch web player
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro_retroarch_web_player
+#          path: dist/retroarch-web-player
+
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro_nostalgist_aetherion
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
           path: dist/nostalgist-aetherion
+          remote-path: /htdocs/nostalgist-aetherion
 
-      - name: Download Nostalgist.js with Crysalis
-        uses: actions/download-artifact@v5
+#      - name: Download Nostalgist.js with Aetherion
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro_nostalgist_aetherion
+#          path: dist/nostalgist-aetherion
+
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro_nostalgist_crysalis
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
           path: dist/nostalgist-crysalis
+          remote-path: /htdocs/nostalgist-crysalis
 
-      - name: 'Download Nostalgist.js with KNight-Blade: Howling of Kerberos'
-        uses: actions/download-artifact@v5
+#      - name: Download Nostalgist.js with Crysalis
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro_nostalgist_crysalis
+#          path: dist/nostalgist-crysalis
+
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro_nostalgist_knight-blade-howling-of-kerberos
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
           path: dist/nostalgist-knight-blade-howling-of-kerberos
+          remote-path: /htdocs/nostalgist-knight-blade-howling-of-kerberos
 
-      - name: Download Nostalgist.js with Star Stealing Prince
-        uses: actions/download-artifact@v5
+#      - name: 'Download Nostalgist.js with KNight-Blade: Howling of Kerberos'
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro_nostalgist_knight-blade-howling-of-kerberos
+#          path: dist/nostalgist-knight-blade-howling-of-kerberos
+
+      - name: download ftp
+        uses: sokuhatiku/ftp-download-artifact@v1
         with:
           name: mkxp-z_libretro_nostalgist_star-stealing-prince
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
           path: dist/nostalgist-star-stealing-prince
+          remote-path: /htdocs/nostalgist-star-stealing-prince
+
+#      - name: Download Nostalgist.js with Star Stealing Prince
+#        uses: actions/download-artifact@v5
+#        with:
+#          name: mkxp-z_libretro_nostalgist_star-stealing-prince
+#          path: dist/nostalgist-star-stealing-prince
 
       - name: upload ftp
         uses: sokuhatiku/ftp-upload-artifact@v1.0.0
