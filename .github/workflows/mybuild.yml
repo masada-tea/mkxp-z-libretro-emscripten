@@ -422,7 +422,7 @@ jobs:
           submodules: recursive
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: stage1
           host: ftpupload.net
@@ -494,7 +494,7 @@ jobs:
           submodules: recursive
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro.a
           host: ftpupload.net
@@ -550,7 +550,7 @@ jobs:
           submodules: recursive
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro.wasm
           host: ftpupload.net
@@ -649,7 +649,7 @@ jobs:
           submodules: recursive
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro.wasm
           host: ftpupload.net
@@ -666,7 +666,7 @@ jobs:
 #          path: retroarch
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: ${{ matrix.id }}.mkxpz
           host: ftpupload.net
@@ -682,7 +682,7 @@ jobs:
 #          name: ${{ matrix.id }}.mkxpz
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: ${{ matrix.id }}.mkxpz
           host: ftpupload.net
@@ -768,7 +768,7 @@ jobs:
           echo '</body></html>' >> dist/index.html
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro_retroarch_web_player
           host: ftpupload.net
@@ -786,7 +786,7 @@ jobs:
 #          path: dist/retroarch-web-player
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro_nostalgist_aetherion
           host: ftpupload.net
@@ -804,7 +804,7 @@ jobs:
 #          path: dist/nostalgist-aetherion
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro_nostalgist_crysalis
           host: ftpupload.net
@@ -822,7 +822,7 @@ jobs:
 #          path: dist/nostalgist-crysalis
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro_nostalgist_knight-blade-howling-of-kerberos
           host: ftpupload.net
@@ -840,7 +840,7 @@ jobs:
 #          path: dist/nostalgist-knight-blade-howling-of-kerberos
 
       - name: download ftp
-        uses: sokuhatiku/ftp-download-artifact@v1
+        uses: sokuhatiku/ftp-download-artifact@v1.0.0
         with:
           name: mkxp-z_libretro_nostalgist_star-stealing-prince
           host: ftpupload.net
