@@ -53,7 +53,7 @@ jobs:
           zip -r0 ../Standard.mkxpz *
 
       - name: upload ftp
-        uses: sokuhatiku/ftp-upload-artifact@v1
+        uses: sokuhatiku/ftp-upload-artifact@latest
         with:
           name: Standard.mkxpz
           path: /htdocs/Standard.mkxpz
