@@ -111,7 +111,7 @@ jobs:
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          wget -O vxinsanity.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/vxinsanity.zip
+          wget -O vxinsanity.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test2/vxinsanity.zip
 
       - name: Pack game files
         run: |
