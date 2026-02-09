@@ -52,11 +52,22 @@ jobs:
           cd app
           zip -r0 ../Standard.mkxpz *
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: sokuhatiku/ftp-upload-artifact@v1
         with:
           name: Standard.mkxpz
-          path: Standard.mkxpz
+          path: /htdocs/Standard.mkxpz
+          host: ftpupload.net
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          secure: false
+          remote-path: /htdocs
+
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: Standard.mkxpz
+#          path: Standard.mkxpz
 
   download-rpg-maker-vx-rtp:
     name: Download RPG Maker VX run time package
