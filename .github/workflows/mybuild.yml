@@ -52,7 +52,8 @@ jobs:
           cd app
           zip -r0 ../Standard.mkxpz *
 
-      - uses: sokuhatiku/ftp-upload-artifact@v1
+      - name: upload ftp
+        uses: sokuhatiku/ftp-upload-artifact@v1
         with:
           name: Standard.mkxpz
           path: /htdocs/Standard.mkxpz
