@@ -92,8 +92,8 @@ jobs:
           name: aetherion.mkxpz
           path: aetherion.mkxpz
 
-  download-star-stealing-prince:
-    name: Download Star Stealing Prince
+  download-vx:
+    name: 'Download vx'
     runs-on: ubuntu-slim
     steps:
       - name: Install dependencies
@@ -105,26 +105,58 @@ jobs:
         id: cache-game
         uses: actions/cache@v5
         with:
-          key: star-stealing-prince.zip
-          path: star-stealing-prince.zip
+          key: vx.zip
+          path: vx.zip
 
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko star-stealing-prince.zip https://dl.komodo.jp/rpgmakerweb/free-game-bundle/star-stealing-prince.zip
-          [ "$(sha256sum star-stealing-prince.zip | cut -d ' ' -f 1)" = '453e9863d4b88d8b99d78695663849e0e07b8be7a55a2deb40d2b12e3a37c4bc' ]
+          wget -O vx.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/vx.zip
 
       - name: Pack game files
         run: |
-          unzip star-stealing-prince.zip
-          cd StarStealingPrinceFullV.3.2wRTP
-          zip -r0 ../star-stealing-prince.mkxpz *
+          unzip vx.zip
+          cd vx
+          zip -r0 ../vx.mkxpz *
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: star-stealing-prince.mkxpz
-          path: star-stealing-prince.mkxpz
+          name: vx.mkxpz
+          path: vx.mkxpz
+
+    download-vxinsanity:
+    name: 'Download vxinsanity'
+    runs-on: ubuntu-slim
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y curl zip
+
+      - name: Restore game from cache
+        id: cache-game
+        uses: actions/cache@v5
+        with:
+          key: vxinsanity.zip
+          path: vxinsanity.zip
+
+      - name: Download game if not cached
+        if: steps.cache-game.outputs.cache-hit != 'true'
+        run: |
+          wget -O vxinsanity.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/vxinsanity.zip
+
+      - name: Pack game files
+        run: |
+          unzip vxinsanity.zip
+          cd vxinsanity
+          zip -r0 ../vxinsanity.mkxpz *
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vxinsanity.mkxpz
+          path: vxinsanity.mkxpz
 
   build-stage1:
     name: Build stage 1
@@ -307,20 +339,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Aetherion
-            id: aetherion
+          - name: VX
+            id: vx
             rtp: None
             xp: false
-          - name: Star Stealing Prince
-            id: star-stealing-prince
+          - name: VXInsanity
+            id: vxinsanity
             rtp: None
             xp: false
+
     needs:
       - check-nostalgist
       - build-frontend
       - download-rpg-maker-vx-rtp
-      - download-aetherion
-      - download-star-stealing-prince
+      - download-vx
+      - download-vxinsanity
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
     steps:
