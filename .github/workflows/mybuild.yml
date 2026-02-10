@@ -413,13 +413,13 @@ jobs:
       - name: Download Nostalgist.js with vx
         uses: actions/download-artifact@v5
         with:
-          name: mkxp-z_libretro_nostalgist_aetherion
+          name: mkxp-z_libretro_nostalgist_vx
           path: dist/nostalgist-vx
 
       - name: Download Nostalgist.js with vxinsanty
         uses: actions/download-artifact@v5
         with:
-          name: mkxp-z_libretro_nostalgist_crysalis
+          name: mkxp-z_libretro_nostalgist_vxinsanity
           path: dist/nostalgist-vxinsanity
 
       - name: Upload artifact
