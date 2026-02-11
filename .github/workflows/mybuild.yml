@@ -572,8 +572,8 @@ jobs:
             xp: false
           - name: Project
             id: Project
-            rtp: Standard
-            xp: true
+            rtp: None
+            xp: false
     needs:
       - check-nostalgist
       - build-frontend
