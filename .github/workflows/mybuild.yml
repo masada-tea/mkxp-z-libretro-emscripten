@@ -332,8 +332,8 @@ jobs:
           name: vxinsanity.mkxpz
           path: vxinsanity.mkxpz
 
-  download-xptest:
-    name: 'Download xp test'
+  download-vxtest:
+    name: 'Download vx test'
     runs-on: ubuntu-slim
     steps:
       - name: Install dependencies
@@ -586,7 +586,7 @@ jobs:
       - download-star-stealing-prince
       - download-vx
       - download-vxinsanity
-      - download-xptest
+      - download-vxtest
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
     steps:
