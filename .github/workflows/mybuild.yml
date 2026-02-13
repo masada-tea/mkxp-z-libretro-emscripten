@@ -345,24 +345,24 @@ jobs:
         id: cache-game
         uses: actions/cache@v5
         with:
-          key: Project.zip
-          path: Project.zip
+          key: Project1.zip
+          path: Project1.zip
 
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko Project.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/Project.zip
+          curl -Lko Project1.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/Project1.zip
       - name: Pack game files
         run: |
-          unzip Project.zip
+          unzip Project1.zip
           cd Project1
-          zip -r0 ../Project.mkxpz *
+          zip -r0 ../Project1.mkxpz *
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Project.mkxpz
-          path: Project.mkxpz
+          name: Project1.mkxpz
+          path: Project1.mkxpz
 
 
   build-stage1:
@@ -570,8 +570,8 @@ jobs:
             id: vxinsanity
             rtp: None
             xp: false
-          - name: Project
-            id: Project
+          - name: Project1
+            id: Project1
             rtp: None
             xp: false
     needs:
@@ -714,8 +714,8 @@ jobs:
       - name: 'Download Nostalgist.js with KNight-Blade: Howling of Kerberos'
         uses: actions/download-artifact@v5
         with:
-          name: mkxp-z_libretro_nostalgist_Project
-          path: dist/nostalgist-Project
+          name: mkxp-z_libretro_nostalgist_Project1
+          path: dist/nostalgist-Project1
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
