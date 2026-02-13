@@ -366,7 +366,7 @@ jobs:
 
 
   download-3d:
-    name: Download Crysalis
+    name: Download 3d
     runs-on: ubuntu-slim
     steps:
       - name: Install dependencies
@@ -389,7 +389,7 @@ jobs:
       - name: Pack game files
         run: |
           unzip Project.zip
-          cd Project
+          cd Project1
           zip -r0 ../Project.mkxpz *
 
       - name: Upload artifact
