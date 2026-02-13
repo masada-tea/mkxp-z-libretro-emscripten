@@ -365,6 +365,39 @@ jobs:
           path: Project1.mkxpz
 
 
+  download-3d:
+    name: Download Crysalis
+    runs-on: ubuntu-slim
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y curl zip 7zip
+
+      - name: Restore game from cache
+        id: cache-game
+        uses: actions/cache@v5
+        with:
+          key: Project.zip
+          path: Project.zip
+
+      - name: Download game if not cached
+        if: steps.cache-game.outputs.cache-hit != 'true'
+        run: |
+          curl -Lko Project.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/Project.zip
+
+      - name: Pack game files
+        run: |
+          unzip Project.zip
+          cd Project
+          zip -r0 ../Project.mkxpz *
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Project.mkxpz
+          path: Project.mkxpz
+
   build-stage1:
     name: Build stage 1
     runs-on: ubuntu-latest
@@ -574,6 +607,10 @@ jobs:
             id: Project1
             rtp: None
             xp: false
+          - name: Project
+            id: Project
+            rtp: RPGVXAce
+            xp: false
     needs:
       - check-nostalgist
       - build-frontend
@@ -587,6 +624,7 @@ jobs:
       - download-vx
       - download-vxinsanity
       - download-vxtest
+      - download-3d
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
     steps:
@@ -716,6 +754,13 @@ jobs:
         with:
           name: mkxp-z_libretro_nostalgist_Project1
           path: dist/nostalgist-Project1
+
+      - name: Download Nostalgist.js with 3d
+        uses: actions/download-artifact@v5
+        with:
+          name: mkxp-z_libretro_nostalgist_Project
+          path: dist/nostalgist-Project
+
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
