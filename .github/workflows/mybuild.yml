@@ -758,7 +758,7 @@ jobs:
       - name: Download Nostalgist.js with 3d
         uses: actions/download-artifact@v5
         with:
-          name: mkxp-z_libretro_nostalgist_Project
+          name: mkxp-z_libretro_nostalgist_3D
           path: dist/nostalgist-3D
 
 
