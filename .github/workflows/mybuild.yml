@@ -384,11 +384,11 @@ jobs:
       - name: Download game if not cached
         if: steps.cache-game.outputs.cache-hit != 'true'
         run: |
-          curl -Lko Project.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/3D.zip
+          curl -Lko 3D.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/3D.zip
 
       - name: Pack game files
         run: |
-          unzip Project.zip
+          unzip 3D.zip
           cd Project1
           zip -r0 ../3D.mkxpz *
 
