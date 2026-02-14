@@ -389,7 +389,7 @@ jobs:
       - name: Pack game files
         run: |
           unzip 3D.zip
-          cd Project1
+          cd 3D
           zip -r0 ../3D.mkxpz *
 
       - name: Upload artifact
