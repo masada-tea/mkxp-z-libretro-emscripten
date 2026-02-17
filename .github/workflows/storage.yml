@@ -1,0 +1,16 @@
+name: Remove all artifacts manually
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 毎日午前0時に実行
+  workflow_dispatch:  # 手動で実行できるようにする
+
+jobs:
+  remove-old-artifacts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Remove all artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '1 days' 
