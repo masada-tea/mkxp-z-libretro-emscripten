@@ -645,7 +645,6 @@ jobs:
             id: 3D
             rtp: RPGVXAce
             xp: false
-            xp: false
           - name: xptest
             id: xptest
             rtp: Standard
