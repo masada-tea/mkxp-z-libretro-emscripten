@@ -364,6 +364,40 @@ jobs:
           name: Project1.mkxpz
           path: Project1.mkxpz
 
+  download-xptest:
+    name: 'Download xptest'
+    runs-on: ubuntu-slim
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y curl zip
+
+      - name: Restore game from cache
+        id: cache-game
+        uses: actions/cache@v5
+        with:
+          key: xptest.zip
+          path: xptest.zip
+
+      - name: Download game if not cached
+        if: steps.cache-game.outputs.cache-hit != 'true'
+        run: |
+          curl -Lko xptest.zip https://github.com/masada-tea/mkxp-z-libretro-emscripten/releases/download/test/xptest.zip
+
+      - name: Pack game files
+        run: |
+          unzip xptest.zip
+          cd xptest
+          zip -r0 ../xptest.mkxpz *
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xptest.mkxpz
+          path: xptest.mkxpz
+
+
 
   download-3d:
     name: Download 3d
@@ -611,6 +645,11 @@ jobs:
             id: 3D
             rtp: RPGVXAce
             xp: false
+            xp: false
+          - name: xptest
+            id: xptest
+            rtp: Standard
+            xp: true
     needs:
       - check-nostalgist
       - build-frontend
@@ -625,6 +664,7 @@ jobs:
       - download-vxinsanity
       - download-vxtest
       - download-3d
+      - download-xptest
     name: Build Nostalgist.js with ${{ matrix.name }}
     runs-on: ubuntu-slim
     steps:
@@ -760,6 +800,12 @@ jobs:
         with:
           name: mkxp-z_libretro_nostalgist_3D
           path: dist/nostalgist-3D
+
+      - name: 'Download Nostalgist.js with xptest'
+        uses: actions/download-artifact@v5
+        with:
+          name: mkxp-z_libretro_nostalgist_xptest
+          path: dist/nostalgist-xptest
 
 
       - name: Upload artifact
